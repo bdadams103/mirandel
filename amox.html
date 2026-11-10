@@ -90,7 +90,7 @@ var PLACES=[
 var $=function(i){return document.getElementById(i)};
 var BX=2048,BY=1536,img=$("map"),W=2048,H=1536;
 var view=$("view"),world=$("world"),cards=$("cards");
-var T={s:1,x:0,y:0},minS=.1,maxS=4,plot=false,pts=[],open=[];
+var T={s:1,x:0,y:0},minS=.1,maxS=4,plot=false,pts=[];
 try{var sv=localStorage.getItem("amoxMW");if(sv)MAP_WIDTH_MILES=+sv||MAP_WIDTH_MILES}catch(e){}
 img.width=W;img.height=H;$("route").setAttribute("width",W);$("route").setAttribute("height",H);
 function apply(){world.style.transform="translate("+T.x+"px,"+T.y+"px) scale("+T.s+")";world.style.setProperty("--inv",1/T.s)}

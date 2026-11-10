@@ -116,7 +116,7 @@ var REGION={x0:1061,y0:449,x1:1853,y1:1043};           // bounds of the regional
 var $=function(i){return document.getElementById(i)};
 var BX=2212,BY=1659,img=$("map"),W=2576,H=1932;
 var view=$("view"),world=$("world"),cards=$("cards");
-var T={s:1,x:0,y:0},minS=.1,maxS=4,plot=false,pts=[],open=[];
+var T={s:1,x:0,y:0},minS=.1,maxS=4,plot=false,pts=[];
 try{var sv=localStorage.getItem("mirMW");if(sv)MAP_WIDTH_MILES=+sv||MAP_WIDTH_MILES}catch(e){}
 img.width=W;img.height=H;$("route").setAttribute("width",W);$("route").setAttribute("height",H);
 function apply(){world.style.transform="translate("+T.x+"px,"+T.y+"px) scale("+T.s+")";world.style.setProperty("--inv",1/T.s)}
@@ -134,16 +134,16 @@ view.addEventListener("pointermove",function(e){var p=ptr[e.pointerId];if(!p)ret
  if(ids.length===1){var dx=e.clientX-p.x,dy=e.clientY-p.y;if(!moved&&Math.hypot(e.clientX-startXY[0],e.clientY-startXY[1])>6){moved=true;try{view.setPointerCapture(e.pointerId)}catch(x){}}if(moved){T.x+=dx;T.y+=dy;apply()}p.x=e.clientX;p.y=e.clientY}
  else if(ids.length===2){moved=true;var o=ptr[ids.find(function(k){return k!=e.pointerId})];var d0=Math.hypot(p.x-o.x,p.y-o.y);p.x=e.clientX;p.y=e.clientY;var d1=Math.hypot(p.x-o.x,p.y-o.y);if(d0>0){var r=view.getBoundingClientRect();zoomAt((p.x+o.x)/2-r.left,(p.y+o.y)/2-r.top,d1/d0)}}});
 function up(e){if(!ptr[e.pointerId])return;var single=Object.keys(ptr).length===1;delete ptr[e.pointerId];view.style.cursor="";
- if(single&&!moved&&plot&&e.type==="pointerup"&&!e.target.closest(".pin")){var m=toMap(e.clientX,e.clientY);if(m[0]>=0&&m[1]>=0&&m[0]<=W&&m[1]<=H)addPt(m[0],m[1])}
- else if(single&&!moved&&!plot&&e.type==="pointerup"&&!e.target.closest(".pin")&&inRegion(e.clientX,e.clientY)){openRegion()}}
+ if(single&&!moved&&plot&&e.type==="pointerup"&&!e.target.closest(".pin")){var m=toMap(e.clientX,e.clientY);if(m[0]>=0&&m[1]>=0&&m[0]<=W&&m[1]<=H)addPt(m[0],m[1])}}
 view.addEventListener("pointerup",up);view.addEventListener("pointercancel",up);
 view.addEventListener("wheel",function(e){e.preventDefault();var r=view.getBoundingClientRect();zoomAt(e.clientX-r.left,e.clientY-r.top,Math.exp(-e.deltaY*(e.ctrlKey?.01:.0017)))},{passive:false});
 // regional map hotspot
 function inRegion(cx,cy){var m=toMap(cx,cy),bx=m[0]*BX/W,by=m[1]*BY/H;return bx>=REGION.x0&&bx<=REGION.x1&&by>=REGION.y0&&by<=REGION.y1}
-function openRegion(){window.open(REGION_URL,"_blank","noopener")}
+function openRegion(){var w=window.open(REGION_URL,"_blank");if(w){try{w.opener=null}catch(x){}}else location.href=REGION_URL}   // new tab; if the browser blocks it, open in this tab instead
 var rb=document.createElement("div");rb.style.cssText="position:absolute;display:none;pointer-events:none;box-sizing:border-box;border:calc(2px*var(--inv)) dashed #ffd36b;background:rgba(255,211,107,.08);left:"+REGION.x0*W/BX+"px;top:"+REGION.y0*H/BY+"px;width:"+(REGION.x1-REGION.x0)*W/BX+"px;height:"+(REGION.y1-REGION.y0)*H/BY+"px";
 var rl=document.createElement("span");rl.textContent="Click to open the regional map";rl.style.cssText="position:absolute;left:8px;top:8px;transform-origin:0 0;transform:scale(var(--inv));background:var(--panel);color:var(--ink);padding:3px 8px;border-radius:4px;font-size:13px;border:1px solid var(--rule);white-space:nowrap";rb.appendChild(rl);world.appendChild(rb);
 view.addEventListener("pointermove",function(e){if(Object.keys(ptr).length||e.pointerType!=="mouse")return;var on=!plot&&!e.target.closest(".pin")&&inRegion(e.clientX,e.clientY);rb.style.display=on?"block":"none";view.style.cursor=on?"pointer":""});
+view.addEventListener("click",function(e){if(moved||plot||e.target.closest(".pin"))return;if(inRegion(e.clientX,e.clientY))openRegion()});
 view.addEventListener("pointerleave",function(){rb.style.display="none";view.style.cursor=""});
 // info cards
 function showCard(i){var ex=cards.querySelector('[data-i="'+i+'"]');if(ex)return;var p=PLACES[i],c=document.createElement("div");c.className="card ui";c.dataset.i=i;
