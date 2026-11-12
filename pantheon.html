@@ -45,7 +45,7 @@ const GODS=[
 ["Persana","Goddess of Seas and Freedom","Neutral Good"],
 ["Selyne","Goddess of Mercy and Healing","Neutral Good"],
 ["Solas","God of Art and Inspiration","Chaotic Good"],
-["Syl","God of Winds and Travel","Chaotic Good / Chaotic Neutral"],
+["Syl","Goddess of Winds and Travel","Chaotic Good / Chaotic Neutral"],
 ["Umbra","Goddess of Secrets","Lawful Evil / Neutral Evil"]
 ];
 $('list').innerHTML=`<div class=card><table><tr><th>God<th>Domain<th>Alignment</tr>${GODS.slice().sort((a,b)=>a[0].localeCompare(b[0])).map(g=>`<tr><td>${esc(g[0])}<td>${esc(g[1])}<td>${esc(g[2])}</tr>`).join('')}</table></div>`;
