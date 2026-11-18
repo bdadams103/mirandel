@@ -110,7 +110,6 @@ const SESSIONS=[
 ]
 ]
 ];
-];
 // Newest first, by date. A session without a date goes last, in list order.
 const when=s=>Array.isArray(s[1])?'':s[1];
 const time=s=>{const d=Date.parse(when(s));return isNaN(d)?-Infinity:d};
