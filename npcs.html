@@ -70,7 +70,9 @@ const NPCS=[
 ["Viper","???","???","Some relation to Veil"],
 ["One","???","???","Seeming test subject of Veil"],
 ["Two","???","???","Seeming test subject of Veil"],
-
+["Thalanil","Warden","Everlight","Captain of the Wardens of Everlight"],
+["Merethil","Lord","Everlight","Lord Consort of Everlight"],
+["Aelindra","Lady","Everlight","Lady of Everlight"]
 ];
 function render(){const q=$('q').value.toLowerCase();
 const list=NPCS.filter(n=>!q||n.join(' ').toLowerCase().includes(q)).sort((a,b)=>a[0].localeCompare(b[0]));
